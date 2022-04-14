@@ -1,15 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-top-navbar',
   templateUrl: './top-navbar.component.html',
-  styleUrls: ['./top-navbar.component.css']
+  styleUrls: ['./top-navbar.component.css'],
 })
 export class TopNavbarComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

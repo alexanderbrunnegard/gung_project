@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-side-navbar',
@@ -6,22 +6,19 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./side-navbar.component.css'],
 })
 export class SideNavbarComponent implements OnInit {
-  mini: boolean = true;
+  toggled: boolean = true;
   constructor() {}
 
   ngOnInit(): void {}
-
+  @Output() onSideBarToggled: EventEmitter<any> = new EventEmitter<any>();
   toggleSidebar(): void {
-    if (this.mini) {
+    this.onSideBarToggled.emit(this.toggled);
+    if (this.toggled) {
       document.getElementById('sidebar')!.style.width = '250px';
-      //document.getElementById('main')!.style.marginLeft = '250px';
-
-      this.mini = false;
+      this.toggled = false;
     } else {
       document.getElementById('sidebar')!.style.width = '80px';
-      //document.getElementById('main')!.style.marginLeft = '80px';
-
-      this.mini = true;
+      this.toggled = true;
     }
   }
 }

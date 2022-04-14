@@ -48,6 +48,9 @@
           cb && cb(window.gung.products[id]);
         }, Math.random() * 300);
       };
+      var printResult = function () {
+        console.log(window.gung.categories);
+      };
 
       window.getAlotOfCategories = function (cb) {
         var sROT = {

@@ -5,7 +5,7 @@
  */
 
 import express from "express";
-//TODO: Don't forget to import routers here
+import { createDefualtCategoriesRouter } from "./router/categories.router";
 /**
  
   * App Variables
@@ -14,6 +14,10 @@ import express from "express";
 
 export const app = express();
 
+app.get("/test", function (req, res) {
+  res.send("Hello from the root application URL");
+});
+
 /**
  
   * App Configuration
@@ -21,5 +25,4 @@ export const app = express();
   */
 
 app.use(express.json());
-
-//app.use("/ROUTE", ROUTER);
+app.use("/categories", createDefualtCategoriesRouter());

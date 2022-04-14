@@ -46,21 +46,17 @@
   background: #141e30;
   border-radius: 16px;
   color: #fff;
-  outline-color: none;
-  transition: width 0.4s ease-in-out;
-}
-input[type="text"]:hover {
-  border: 1px solid #3bba9c;
 }
 
 input[type="text"]:focus {
-  width: 90%;
+  border: 1px solid #3bba9c;
+  outline: 1px solid #3bba9c;
 }
 
 ::placeholder {
   /* Chrome, Firefox, Opera, Safari 10.1+ */
   padding-left: 8px;
-  color: grey;
+  color: #aaaaaa;
   opacity: 1; /* Firefox */
   font-size: 14px;
 }
@@ -79,4 +75,11 @@ input[type="text"]:focus {
 
 i {
   color: #3bba9c;
+}
+
+#main {
+  transition: margin-left 0.5s;
+
+  margin-left: 100px;
+  flex: 1;
 }
