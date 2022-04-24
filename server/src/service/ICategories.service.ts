@@ -1,5 +1,5 @@
 //TODO: IMPORT MODEL
 
 export interface ICategoriesService {
-  testFunction(): Promise<string>;
+  testFunction(): Promise<void>;
 }

@@ -1,5 +1,17 @@
-<app-side-navbar (onSideBarToggled)="sideBarToggled($event)"></app-side-navbar>
+<app-side-navbar
+  (onSideBarToggled)="sideBarToggled($event)"
+  (onCategoryToggled)="categoryToggled($event)"
+></app-side-navbar>
 <div id="main">
-  <app-top-navbar></app-top-navbar>
-  <h1 style="color: white; margin-left: 100px">HEEEEEEEJ</h1>
+  <app-top-navbar
+    (onSortByPriceToggled)="sortByPriceToggled($event)"
+    (onSortByStockToggled)="sortByStockToggled($event)"
+    (onSortByVolToggled)="sortByVolToggled($event)"
+  ></app-top-navbar>
+  <app-products
+    [sortByPrice]="sortByPriceSelector"
+    [sortByVolume]="sortByVolSelector"
+    [sortByStock]="sortByStockSelector"
+    [categoryPicked]="category"
+  ></app-products>
 </div>

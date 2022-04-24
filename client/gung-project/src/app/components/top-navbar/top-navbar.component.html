@@ -1,15 +1,23 @@
-<div id="main">
-  <div class="topnav">
-    <a href="#">Categories</a>
-    <a href="#">Test1</a>
-    <a href="#">Test2</a>
-    <a href="#">Test3</a>
-    <a href="#">Test4</a>
-    <div class="search-container">
-      <form class="input-container">
-        <input type="text" placeholder="Search.." name="search" />
-        <button type="submit"><i class="bi bi-search"></i></button>
-      </form>
-    </div>
+<div class="topnav">
+  <a id="sort" href="#/">Sortera efter:</a>
+  <a href="#/" id="lagerstatus" (click)="sortByStock()">Lagerstatus</a>
+  <a href="#/" id="pris" (click)="sortByPrice()">Pris</a>
+  <a href="#/" id="volym" (click)="sortByVol()">Volym</a>
+  <div *ngIf="sortByVolToggled" class="volumeContainer">
+    <form class="input-container">
+      <input type="number" placeholder="från..." name="from_volume" />
+      <input type="number" placeholder="till..." name="to_volume" />
+    </form>
+  </div>
+  <div class="search-container">
+    <form class="input-container">
+      <input
+        (keyup)="searchFunction($event)"
+        type="text"
+        placeholder="Search.."
+        name="search"
+      />
+      <button type="submit"><i class="bi bi-search"></i></button>
+    </form>
   </div>
 </div>

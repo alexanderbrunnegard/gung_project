@@ -48,8 +48,11 @@
           cb && cb(window.gung.products[id]);
         }, Math.random() * 300);
       };
-      var printResult = function () {
-        console.log(window.gung.categories);
+
+      window.getProducts = function (cb) {
+        setTimeout(function () {
+          cb && cb(window.gung.products);
+        }, Math.random() * 300);
       };
 
       window.getAlotOfCategories = function (cb) {

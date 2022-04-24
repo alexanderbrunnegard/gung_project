@@ -6,19 +6,16 @@
       (mouseenter)="toggleSidebar()"
       (mouseleave)="toggleSidebar()"
     >
-      <h3>Menu</h3>
-      <nav class="menu">
-        <a href="#" class="menu-item is-active"
-          ><i class="bi bi-house-door" style="font-size: 2rem"></i>Home</a
-        >
-        <a href="#" class="menu-item"
-          ><i class="bi bi-info-square" style="font-size: 2rem"></i>Exempel1</a
-        >
-        <a href="#" class="menu-item"
-          ><i class="bi bi-basket" style="font-size: 2rem"></i>Exempel1</a
-        >
-        <a href="#" class="menu-item"
-          ><i class="bi bi-envelope" style="font-size: 2rem"></i>Exempel1</a
+      <h3>Kategori</h3>
+      <nav class="menu" *ngFor="let category of categories; let i = index">
+        <a
+          href="#"
+          class="menu-item"
+          [ngClass]="{ active: selectedIndex === i }"
+          (click)="onCategoryClicked(category)"
+          (click)="setIndex(i)"
+          ><i class="bi bi-bookmark" style="font-size: 2rem"></i
+          >{{ category }}</a
         >
       </nav>
     </aside>

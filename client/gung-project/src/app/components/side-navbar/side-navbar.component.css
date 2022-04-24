@@ -11,7 +11,7 @@
 
 .sidebar {
   flex: 1 1 0;
-  max-width: 240px;
+  max-width: 280px;
   width: 80px;
   padding: 2rem 1rem;
   background-color: #141e30;
@@ -29,9 +29,10 @@
 }
 
 .sidebar h3 {
-  color: #707793;
-  font-size: 2rem;
+  color: #fff;
+  font-size: 16px;
   margin-bottom: 0.5em;
+  font-weight: bold;
 }
 
 .sidebar .menu {
@@ -44,12 +45,16 @@
   color: #fff;
   text-decoration: none;
   transition: 0.2s linear;
-  font-size: 1.7rem;
+  font-size: 17px;
 }
 
-.sidebar .menu .menu-item:hover,
-.sidebar .menu .menu-item.is-active {
+.sidebar .menu .menu-item:hover {
   color: #3bba9c;
+  border-right: 3px solid #3bba9c;
+}
+
+.active {
+  color: #3bba9c !important;
   border-right: 3px solid #3bba9c;
 }
 
