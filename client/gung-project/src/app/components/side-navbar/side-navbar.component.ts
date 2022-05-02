@@ -1,5 +1,11 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import * as $ from 'jquery';
+import {
+  Component,
+  DoCheck,
+  EventEmitter,
+  OnChanges,
+  OnInit,
+  Output,
+} from '@angular/core';
 
 @Component({
   selector: 'app-side-navbar',
@@ -10,9 +16,8 @@ export class SideNavbarComponent implements OnInit {
   selectedIndex: number = 0;
   categories: any[] = [];
   toggled: boolean = true;
-  isActive: boolean = false;
   @Output() onSideBarToggled: EventEmitter<any> = new EventEmitter<any>();
-  @Output() onCategoryToggled: EventEmitter<any> = new EventEmitter<any>();
+  @Output() categoryPicked: EventEmitter<string> = new EventEmitter<string>();
 
   constructor() {}
 
@@ -21,10 +26,10 @@ export class SideNavbarComponent implements OnInit {
     getCategories(this.getGungCategories);
   }
 
-  // Bad complexity.
-  getGungCategories: (gungCategories: any) => void = (
+  // I don't want to use double for loop but for this project i'm using it to save my time since the products and categories are quite few. I'am however very aware of the bad complexity. Here I would want to research more how to search through json faster.
+  getGungCategories: (gungCategories: any) => void = async (
     gungCategories: any
-  ): void => {
+  ): Promise<void> => {
     for (let key in gungCategories.children) {
       if (gungCategories.children[key].id.charAt(0) == 's') {
         this.categories.push(gungCategories.children[key].name);
@@ -36,27 +41,29 @@ export class SideNavbarComponent implements OnInit {
           );
       }
     }
+    this.categoryPicked.emit(this.categories[0]);
   };
 
+  /**
+   * It sets the selectedIndex property of the component to the index passed in
+   * @param {number} index - The index of the tab that was selected.
+   */
   setIndex(index: number): void {
     this.selectedIndex = index;
   }
 
-  removeCategoryIndicator(index: number): void {}
-
-  onCategoryClicked(category: string, index: number): void {
-    if (this.selectedIndex === index) {
-      category = '';
-      $('a').removeClass('active');
-      this.onCategoryToggled.emit(category);
-    } else {
-      this.selectedIndex = 0;
-      $('.menu-item').find('.active').removeClass('active');
-      $(this).parent().addClass('active');
-      this.onCategoryToggled.emit(category);
-    }
+  /**
+   * When a category is clicked, emit the category name to the parent component
+   * @param {string} category - string - the name of the category that was clicked
+   */
+  onCategoryClicked(category: string): void {
+    this.categoryPicked.emit(category);
   }
 
+  /**
+   * If the sidebar is toggled, then set the width to 280px and set the toggled variable to false.
+   * Otherwise, set the width to 80px and set the toggled variable to true
+   */
   toggleSidebar(): void {
     this.onSideBarToggled.emit(this.toggled);
     if (this.toggled) {

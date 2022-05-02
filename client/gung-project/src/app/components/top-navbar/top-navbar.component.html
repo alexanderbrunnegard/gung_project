@@ -12,6 +12,7 @@
         [(ngModel)]="fromVolume"
         (keyup)="updateSortByVol()"
       />
+
       <input
         type="number"
         placeholder="till..."
@@ -25,12 +26,14 @@
     <form class="input-container">
       <input
         [(ngModel)]="searchValue"
-        (keyup)="searchFunction($event)"
+        (keyup)="searchFunction()"
         type="text"
         placeholder="Search.."
         name="search"
       />
-      <button type="submit"><i class="bi bi-search"></i></button>
+      <button type="submit" (click)="searchFunction()">
+        <i class="bi bi-search"></i>
+      </button>
     </form>
   </div>
 </div>

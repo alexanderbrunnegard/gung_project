@@ -1,12 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.css'],
 })
-export class ProductsComponent implements OnInit {
-  products: any[] = []; // Would like to have a type for product from a model here rather than any.
-  allProducts: any[] = [];
+export class ProductsComponent {
+  products: any[] = []; // TODO: Create a model/interface for product
   categoryChildren: any[] = [];
   _sortByPrice: boolean = false;
   _sortByStock: boolean = false;
@@ -16,12 +15,13 @@ export class ProductsComponent implements OnInit {
 
   constructor() {}
 
+  // Input setters
   @Input() set sortByPrice(val: boolean) {
     this._sortByPrice = val;
     if (this._sortByPrice) {
       this.sortByPriceCalled();
     } else {
-      this.initializeProducts();
+      this.getProducts(this.categoryChildren);
     }
   }
 
@@ -30,24 +30,16 @@ export class ProductsComponent implements OnInit {
     if (this._sortByStock) {
       this.sortByStockCalled();
     } else {
-      this.initializeProducts();
+      this.getProducts(this.categoryChildren);
     }
   }
   @Input() set categoryPicked(category: string) {
     this._categoryPicked = category;
-    console.log('inne 1');
-    if (this._categoryPicked.length != 0) {
-      console.log('inne 2');
-      this.sortByCategoryCalled();
-    } else {
-      console.log('inne 3');
-      this.initializeProducts();
-    }
+    this.sortByCategoryCalled();
   }
 
   @Input() set sortByVolume(val: any) {
     this._sortByVol = val?.toggled;
-
     if (this._sortByVol) {
       if (val.from == null) {
         val.from = 0;
@@ -57,31 +49,31 @@ export class ProductsComponent implements OnInit {
       }
       this.sortByVolumeCalled(val.from, val.to);
     } else {
-      this.initializeProducts();
+      this.getProducts(this.categoryChildren);
     }
   }
 
   @Input() set searchString(searchString: string) {
+    // Bad solution to make it reset when i erase one character.
     this._searchString = searchString;
     if (this._searchString.length != 0) {
       this.search(searchString);
     } else {
-      this.initializeProducts();
+      this.getProducts(this.categoryChildren);
     }
   }
 
-  ngOnInit(): void {
-    this.populateProducts();
-  }
-
-  initializeProducts(): void {
-    //@ts-ignore
-    getProducts(this.getGungProducts);
-  }
-
-  populateProducts(): void {
-    //@ts-ignore
-    getProducts(this.getAllProducts);
+  /**
+   * It takes an array of product IDs, and then calls the getProduct function for each ID in the array
+   * @param {string[]} arrayOfIds - string[] - an array of product ids
+   */
+  getProducts(arrayOfIds: string[]): void {
+    // Empty array
+    this.products = [];
+    for (let i: number = 0; i < arrayOfIds.length; i++) {
+      //@ts-ignore
+      getProduct(arrayOfIds[i], this.getGungProducts);
+    }
   }
 
   sortByCategoryCalled(): void {
@@ -89,10 +81,14 @@ export class ProductsComponent implements OnInit {
     getCategories(this.getGungCategories);
   }
 
-  // This methods extracts the ID's of the selected categories subcategory. However, it only works with this exact json format. And on top of that has a very bad complexity. Given the time I would had created this as a more general function and getting a way better time complexity. Preferably with a hash table perhaps?
+  /* A callback function that is called when the getCategories function is done. It takes the json  * object that the getCategories function returns and then searches through the json object to find * the category that the user has picked. Then it extracts the id's of the subcategories and then  * calls the getProducts function with the array of id's.
+   */
   getGungCategories: (gungCategories: any) => any = (
     gungCategories: any
   ): any => {
+    // This methods extracts the ID's of the selected categories subcategory. However, it only works with this exact json format. And on top of that has a very bad complexity. Here I would've wanted to focus more of my time to make the searching through json faster.
+
+    // Reset array
     this.categoryChildren = [];
     // If this is true then the first category is called.
     if (gungCategories.children[0].name === this._categoryPicked) {
@@ -103,7 +99,7 @@ export class ProductsComponent implements OnInit {
           );
       }
     } else {
-      // If the first category "slangupprullare isn't picked. The rest of the categories are on index gungCategories.children[0]" This way I need one less for loop. Again I wouldn't want to nest a for loop if we had 1000s of children in our categories the time complexity would've been to high.
+      // If the first category "slangupprullare isn't picked. The rest of the categories are on index gungCategories.children[0]" This way I need one less for loop. If not I would have added another for loop. Again I wouldn't want to nest a for loop if we had 1000s of children in our categories since the time complexity would've been to high.
       for (let key in gungCategories.children[0].children) {
         if (
           gungCategories.children[0].children[key].name === this._categoryPicked
@@ -116,38 +112,29 @@ export class ProductsComponent implements OnInit {
         }
       }
     }
-    // Filter out the products that hasn't the Id's we found.
-    this.products = this.allProducts.filter((product: any) =>
-      this.categoryChildren.includes(product.id)
-    );
-    this.populateProducts();
+    this.getProducts(this.categoryChildren);
   };
 
-  getGungProducts: (gungProducts: any) => void = (gungProducts: any): void => {
-    // Removes duplicate products.
-    this.products.splice(0);
-    let productsJson: string[] = Object.values(gungProducts);
-    productsJson.forEach((element: string): number =>
-      this.products.push(element)
-    );
+  /* Callback function that is called when the getProduct function is done. */
+  getGungProducts: (gungProduct: any) => void = (gungProduct: any): void => {
+    this.products.push(gungProduct);
   };
 
-  getAllProducts: (gungProducts: any) => void = (gungProducts: any): void => {
-    // Removes duplicate products.
-    this.allProducts.splice(0);
-    let productsJson: string[] = Object.values(gungProducts);
-    productsJson.forEach((element: string): number =>
-      this.allProducts.push(element)
-    );
-  };
-
-  sortByPriceCalled() {
+  /**
+   * It sorts the products by price.
+   */
+  sortByPriceCalled(): void {
     this.products.sort((a, b) =>
       a.extra.AGA.PRI.localeCompare(b.extra.AGA.PRI)
     );
   }
 
+  /**
+   * It takes a string as an argument and filters the products array to only include products that * * have a name or id that includes the search string
+   * @param {string} searchString - string - This is the string that the user types into the search bar.
+   */
   search(searchString: string): void {
+    // TODO: Doesn't work if the user erases one character and starts typing again.
     this.products = this.products.filter(
       (product: any) =>
         product.name.toLowerCase().includes(searchString.toLowerCase()) ||
@@ -155,7 +142,11 @@ export class ProductsComponent implements OnInit {
     );
   }
 
-  sortByStockCalled() {
+  /**
+   * The function filters the products array to only include products with a stock value greater than 0, then sorts the array by the stock value from high to low.
+   * @returns The products array are being filtered by the stock and then sorted by the stock.
+   */
+  sortByStockCalled(): void {
     this.products = this.products.filter(function (stock: any) {
       return stock.extra.AGA.LGA > 0;
     });
@@ -164,6 +155,11 @@ export class ProductsComponent implements OnInit {
     );
   }
 
+  /**
+   * It filters the products array by the volume range and then sorts the array by volume
+   * @param {number} from - number - the minimum volume
+   * @param {number} to - number - the maximum volume of the product
+   */
   sortByVolumeCalled(from: number, to: number): void {
     this.products = this.products.filter(
       (product: any) =>

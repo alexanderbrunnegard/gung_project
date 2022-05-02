@@ -8,15 +8,16 @@
     >
       <h3>Kategori</h3>
       <nav class="menu" *ngFor="let category of categories; let i = index">
-        <a
+        <p
+          style="cursor: pointer"
           href="#"
           class="menu-item"
           [ngClass]="{ active: selectedIndex === i }"
-          (click)="onCategoryClicked(category, i)"
+          (click)="onCategoryClicked(category)"
           (click)="setIndex(i)"
-          ><i class="bi bi-bookmark" style="font-size: 2rem"></i
-          >{{ category }}</a
         >
+          <i class="bi bi-bookmark" style="font-size: 2rem"></i>{{ category }}
+        </p>
       </nav>
     </aside>
   </div>

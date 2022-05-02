@@ -37,7 +37,7 @@
 
 .active {
   color: #3bba9c !important;
-  border-bottom: 3px solid #3bba9c;
+  border-bottom: 3px solid #3bba9c !important;
 }
 
 /* Style the input container */
