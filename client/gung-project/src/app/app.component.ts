@@ -1,5 +1,4 @@
 import { Component, getDebugNode, Inject, OnInit } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -9,32 +8,36 @@ import { DOCUMENT } from '@angular/common';
 })
 export class AppComponent implements OnInit {
   constructor() {}
-
+  searchString: string = '';
   sortByPriceSelector: boolean = false;
-  sortByVolSelector: boolean = false;
+  sortByVolSelector: any;
   sortByStockSelector: boolean = false;
   category: string = '';
 
-  ngOnInit() {}
+  ngOnInit(): void {}
 
-  sideBarToggled(toggled: boolean) {
+  sideBarToggled(toggled: boolean): void {
     if (toggled) {
       document.getElementById('main')!.style.marginLeft = '190px';
     } else {
       document.getElementById('main')!.style.marginLeft = '0px';
     }
   }
-  categoryToggled(category: string) {
+  categoryToggled(category: string): void {
     this.category = category;
   }
 
-  sortByPriceToggled(toggled: boolean) {
+  searchForToggled(searchString: string): void {
+    this.searchString = searchString;
+  }
+
+  sortByPriceToggled(toggled: boolean): void {
     this.sortByPriceSelector = toggled;
   }
-  sortByVolToggled(toggled: boolean) {
+  sortByVolToggled(toggled: any): void {
     this.sortByVolSelector = toggled;
   }
-  sortByStockToggled(toggled: boolean) {
+  sortByStockToggled(toggled: boolean): void {
     this.sortByStockSelector = toggled;
   }
 }

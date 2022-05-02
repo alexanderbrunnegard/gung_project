@@ -10,19 +10,25 @@ export class TopNavbarComponent implements OnInit {
 
   ngOnInit(): void {}
   searchString: string = '';
-
+  fromVolume: number = 0;
+  toVolume: number = 9999;
   sortBypriceToggled: boolean = false;
   sortByVolToggled: boolean = false;
   sortByStockToggled: boolean = false;
+  searchValue: string = '';
 
   @Output() onSortByPriceToggled: EventEmitter<boolean> =
     new EventEmitter<boolean>();
-  @Output() onSortByVolToggled: EventEmitter<boolean> =
-    new EventEmitter<boolean>();
+  @Output() onSortByVolToggled = new EventEmitter<{
+    toggled: boolean;
+    from: number;
+    to: number;
+  }>();
   @Output() onSortByStockToggled: EventEmitter<boolean> =
     new EventEmitter<boolean>();
+  @Output() onSearch: EventEmitter<string> = new EventEmitter<string>();
 
-  sortByPrice() {
+  sortByPrice(): void {
     if (this.sortBypriceToggled) {
       $(`#pris`).removeClass('active');
       this.sortBypriceToggled = false;
@@ -35,33 +41,39 @@ export class TopNavbarComponent implements OnInit {
     }
   }
 
-  sortByVol() {
+  updateSortByVol(): void {
+    this.onSortByVolToggled.emit({
+      toggled: this.sortByVolToggled,
+      from: this.fromVolume,
+      to: this.toVolume,
+    });
+  }
+
+  sortByVol(): void {
     if (this.sortByVolToggled) {
       $(`#volym`).removeClass('active');
       this.sortByVolToggled = false;
-      this.onSortByVolToggled.emit(this.sortByVolToggled);
+      this.onSortByVolToggled.emit({
+        toggled: this.sortByVolToggled,
+        from: this.fromVolume,
+        to: this.toVolume,
+      });
     } else {
       $('body a').removeClass('active');
       $(`#volym`).addClass('active');
       this.sortByVolToggled = true;
-      this.onSortByVolToggled.emit(this.sortByVolToggled);
+      this.onSortByVolToggled.emit({
+        toggled: this.sortByVolToggled,
+        from: this.fromVolume,
+        to: this.toVolume,
+      });
     }
   }
-  searchFunction(searchValue: any) {
-    // To allow alphanumeric only.
-    if (
-      (searchValue.keyCode >= 48 && searchValue.keyCode <= 57) ||
-      (searchValue.keyCode >= 65 && searchValue.keyCode <= 90)
-    ) {
-      this.searchString = this.searchString + searchValue.key;
-      console.log(searchValue);
-    }
+  searchFunction(event: any): void {
+    this.onSearch.emit(this.searchValue);
+  }
 
-    if ('slangupprullare Avfettning 10m'.includes(this.searchString)) {
-      console.log('Japp');
-    }
-  }
-  sortByStock() {
+  sortByStock(): void {
     if (this.sortByStockToggled) {
       $(`#lagerstatus`).removeClass('active');
       this.sortByStockToggled = false;

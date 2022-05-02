@@ -5,13 +5,26 @@
   <a href="#/" id="volym" (click)="sortByVol()">Volym</a>
   <div *ngIf="sortByVolToggled" class="volumeContainer">
     <form class="input-container">
-      <input type="number" placeholder="från..." name="from_volume" />
-      <input type="number" placeholder="till..." name="to_volume" />
+      <input
+        type="number"
+        placeholder="från..."
+        name="from_volume"
+        [(ngModel)]="fromVolume"
+        (keyup)="updateSortByVol()"
+      />
+      <input
+        type="number"
+        placeholder="till..."
+        name="to_volume"
+        [(ngModel)]="toVolume"
+        (keyup)="updateSortByVol()"
+      />
     </form>
   </div>
   <div class="search-container">
     <form class="input-container">
       <input
+        [(ngModel)]="searchValue"
         (keyup)="searchFunction($event)"
         type="text"
         placeholder="Search.."

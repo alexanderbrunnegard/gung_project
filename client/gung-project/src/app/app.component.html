@@ -7,11 +7,13 @@
     (onSortByPriceToggled)="sortByPriceToggled($event)"
     (onSortByStockToggled)="sortByStockToggled($event)"
     (onSortByVolToggled)="sortByVolToggled($event)"
+    (onSearch)="searchForToggled($event)"
   ></app-top-navbar>
   <app-products
     [sortByPrice]="sortByPriceSelector"
     [sortByVolume]="sortByVolSelector"
     [sortByStock]="sortByStockSelector"
     [categoryPicked]="category"
+    [searchString]="searchString"
   ></app-products>
 </div>

@@ -6,6 +6,7 @@ import { SideNavbarComponent } from './components/side-navbar/side-navbar.compon
 import { TopNavbarComponent } from './components/top-navbar/top-navbar.component';
 import { CartComponent } from './components/cart/cart.component';
 import { ProductsComponent } from './components/products/products.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,7 @@ import { ProductsComponent } from './components/products/products.component';
     CartComponent,
     ProductsComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule],
+  imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [{ provide: Window, useValue: window }],
   bootstrap: [AppComponent],
 })

@@ -21,6 +21,7 @@ export class SideNavbarComponent implements OnInit {
     getCategories(this.getGungCategories);
   }
 
+  // Bad complexity.
   getGungCategories: (gungCategories: any) => void = (
     gungCategories: any
   ): void => {
@@ -41,10 +42,19 @@ export class SideNavbarComponent implements OnInit {
     this.selectedIndex = index;
   }
 
-  onCategoryClicked(category: string) {
-    $('.menu-item').find('.active').removeClass('active');
-    $(this).parent().addClass('active');
-    this.onCategoryToggled.emit(category);
+  removeCategoryIndicator(index: number): void {}
+
+  onCategoryClicked(category: string, index: number): void {
+    if (this.selectedIndex === index) {
+      category = '';
+      $('a').removeClass('active');
+      this.onCategoryToggled.emit(category);
+    } else {
+      this.selectedIndex = 0;
+      $('.menu-item').find('.active').removeClass('active');
+      $(this).parent().addClass('active');
+      this.onCategoryToggled.emit(category);
+    }
   }
 
   toggleSidebar(): void {
