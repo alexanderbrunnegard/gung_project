@@ -9,7 +9,7 @@ Nothing special. Navigate to client/gung-project and start with ng serve
 
 ## Server 
 
-Have not implemented anything except first initiation of files. I intended to fetch everything from a server to make it easier with asynchronous fetching but I ran out of time. I have however some basic experience with backend programming with node and express.
+I have not implemented anything except first initiation of files. I intended to fetch everything from a server and make it easier with asynchronous fetching but I ran out of time. I have however some basic experience with backend programming with node and express.
 
 ## Window
 
